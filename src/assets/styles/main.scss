@@ -1,0 +1,97 @@
+@import './variables';
+@import './breakpoints';
+@import './base';
+
+.container {
+    width: 100%;
+    max-width: var(--container-width);
+    padding-right: var(--space-40);
+    padding-left: var(--space-40);
+    margin-right: auto;
+    margin-left: auto;
+}
+
+@each $breakpoint,
+$width,
+$maw in $breakpoints {
+    @media (min-width: $width) {
+        .container {
+            --container-width: calc(#{$maw} + var(--space-40) * 2);
+        }
+    }
+}
+
+.section {
+    padding-top: var(--section-padding);
+    padding-bottom: var(--section-padding);
+    background-position: 50% 50%;
+    background-size: cover;
+
+    &:first-of-type {
+        padding-top: calc(var(--section-padding) / 2);
+    }
+
+    // отступы между секциями без фона схлопываются
+    &:not([class*="bg-"])+&:not([class*="bg-"]) {
+        padding-top: 0;
+    }
+
+    &__header {
+        margin-bottom: var(--section-header-margin);
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        gap: var(--space-10);
+    }
+
+    &__title {
+        margin: 0;
+        font-family: var(--font-family-title);
+    }
+}
+
+
+.check {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    color: var(--color-gold);
+    border: 2px solid currentColor;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition-base);
+    position: relative;
+
+    /* Вариант RADIO (круг с точкой) */
+    &--radio {
+        border-radius: 50%;
+    }
+
+    &.is-active::after {
+        content: '';
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background-color: currentColor;
+    }
+
+    /* Вариант CHECKBOX */
+    &--checkbox {
+        border-radius: 5px;
+        &.is-active {
+            &::after {
+                border-radius: 3px;
+            }
+        }
+    }
+    
+    :checked~&--checkbox::after {
+        content: '';
+        width: 14px;
+        height: 14px;
+        border-radius: 5px;
+        background-color: currentColor;
+    }
+}
+
